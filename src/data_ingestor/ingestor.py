@@ -30,8 +30,9 @@ def load_data(input_data_dir):
                     else:
                         if file_path.endswith(".md"):
                             logging.info(f"Extracting markdown data from = {file_path}")
-                            docs.append(UnstructuredMarkdownLoader(file_path).load())
+                            docs.extend(UnstructuredMarkdownLoader(file_path).load())
 
+        logging.info(f"input data extraction completed successfully, {len(docs)} documents extracted")
         return docs
 
     except FileNotFoundError as e:

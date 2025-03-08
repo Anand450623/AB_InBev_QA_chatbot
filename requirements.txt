@@ -31,3 +31,5 @@ zstandard==0.23.0
 langchain_community
 unstructured
 markdown
+langchain_huggingface
+faiss-cpu
