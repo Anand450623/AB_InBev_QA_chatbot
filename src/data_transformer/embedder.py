@@ -19,11 +19,8 @@ def convert_to_embedding_and_create_vs(doc_splits, hf_embed_model, vector_store_
         raise CustomException(e, sys)
 
 
-def test_vs_store(hf_embed_model, vector_store_save_path, query):
+def get_retriever(hf_embed_model, vector_store_save_path):
     embeddings = HuggingFaceEmbeddings(model_name=hf_embed_model)
-    new_db = FAISS.load_local(vector_store_save_path, embeddings, allow_dangerous_deserialization=True)
-    docs = new_db.as_retriever().invoke(query)
-    #docs = new_db.similarity_search(query)
-
-    print(docs)
+    db = FAISS.load_local(vector_store_save_path, embeddings, allow_dangerous_deserialization=True)
+    return db.as_retriever()
 

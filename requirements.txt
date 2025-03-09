@@ -33,3 +33,4 @@ unstructured
 markdown
 langchain_huggingface
 faiss-cpu
+langchain_groq
