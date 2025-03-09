@@ -13,7 +13,7 @@ All the keys and model names are to be taken from .env file which can't be pushe
 
 docker build -t {your_image_name} .
 
-docker run --rm /\
+docker run --rm \
 -e HF_TOKEN={value} \
 -e input_data_dir=demo_bot_data \
 -e hf_embed_model={value} \
