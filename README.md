@@ -59,7 +59,9 @@ First Interaction with Chatbot:
 
 ![image](https://github.com/user-attachments/assets/2134996d-bf47-4c18-86cb-f5c9857cedef)
 
+# Activity Track in github for code push: (Optional- was mentioned to share in problem statement doc)
 
+![image](https://github.com/user-attachments/assets/354db068-2ff3-4698-ab2b-685c85f9f3ea)
 
 
 
