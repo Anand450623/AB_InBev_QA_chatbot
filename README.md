@@ -39,7 +39,7 @@ docker run --rm \
 ![image](https://github.com/user-attachments/assets/dd75ff9d-2cb0-4002-99ca-985b37b570eb)
 
 2. ChatBot Option:
-  2.1 user_query (str): The question user wants to ask.
+  2.1 user_query (str): The question user wants to ask. <br>
   2.2 new_conversation (bool): If the user wants to start a new chat(true) or continue with existing (false)
   2.3 prev_session_id (str) -> Optional: This is optional when you're starting a new chat, otherwise user has to pass, with each answer the model also responds back the session_id. User can copy paste the same id to continue in the same communication.
 
