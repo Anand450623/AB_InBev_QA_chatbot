@@ -1,7 +1,8 @@
 import random
 import string
 from langchain_groq import ChatGroq
-from langchain_core.messages import trim_messages
+from src.utils.logger import logging
+from src.utils.exception import CustomException
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_community.chat_message_histories import ChatMessageHistory
@@ -14,14 +15,20 @@ store = {}
 
 
 def generate_new_session_id():
+
+    logging.info(f"Generating new session id")
     characters = string.ascii_letters + string.digits + string.punctuation
-    random_string = ''.join(random.choice(characters) for _ in range(10))
-    return random_string
+    session_id = ''.join(random.choice(characters) for _ in range(10))
+    logging.info(f"new session id {session_id} generated")
+    return session_id
 
 
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
 
+    logging.info(f"Trying to fetch session information for {session_id}")
+
     if session_id not in store:
+        logging.info(f"No record found for {session_id}")
         store[session_id] = ChatMessageHistory()
 
     return store[session_id]
@@ -29,6 +36,7 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
 
 def query_chatbot(llm_model, groq_api_key, retriever, user_query, session_id):
 
+    logging.info(f"Initialising LLM with specified parameters")
     llm = ChatGroq(groq_api_key=groq_api_key, model_name=llm_model)
 
     contextualize_q_system_prompt = (
@@ -47,6 +55,7 @@ def query_chatbot(llm_model, groq_api_key, retriever, user_query, session_id):
         ]
     )
 
+    logging.info(f"creating history aware retriever")
     history_aware_retriever = create_history_aware_retriever(llm, retriever, contextualize_q_prompt)
 
     system_prompt = (
@@ -65,28 +74,19 @@ def query_chatbot(llm_model, groq_api_key, retriever, user_query, session_id):
         ]
     )
 
+    logging.info(f"creating QnA Chain")
     question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
     rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
-
-    def trim_history(history):
-        trimmer = trim_messages(
-            max_tokens=2,
-            strategy="last",
-            token_counter=llm,
-            include_system=True,
-            start_on="human",
-        )
-        return trimmer.invoke(history)
 
     conversational_rag_chain = RunnableWithMessageHistory(
         rag_chain,
         get_session_history,
         input_messages_key="input",
         history_messages_key="chat_history",
-        output_messages_key="answer",
-        history_transform=trim_history
+        output_messages_key="answer"
     )
 
+    logging.info(f"Generating response")
     response = conversational_rag_chain.invoke(
         {"input": user_query},
         config={
@@ -94,8 +94,6 @@ def query_chatbot(llm_model, groq_api_key, retriever, user_query, session_id):
         },
     )
 
-    print(response.keys())
-    print(len(response['chat_history']))
-    print(response['chat_history'])
+    logging.info(f"generated response = {response}")
 
     return response["answer"]

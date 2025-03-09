@@ -20,7 +20,9 @@ def convert_to_embedding_and_create_vs(doc_splits, hf_embed_model, vector_store_
 
 
 def get_retriever(hf_embed_model, vector_store_save_path):
+    logging.info(f"fetching vector store from {vector_store_save_path}")
     embeddings = HuggingFaceEmbeddings(model_name=hf_embed_model)
     db = FAISS.load_local(vector_store_save_path, embeddings, allow_dangerous_deserialization=True)
-    return db.as_retriever()
-
+    db_retriever = db.as_retriever()
+    logging.info(f"vector store fetched from {vector_store_save_path}")
+    return db_retriever
