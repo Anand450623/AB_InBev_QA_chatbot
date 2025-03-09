@@ -8,7 +8,8 @@ This is solution submission for AB_InBev_QA_chatbot assignment
 4. FastApi Integration -> done (Bonus)
 5. Docker Integration & deployment -> done (Bonus)
 
-# NOTE: All the keys and model names are to be taken from .env file which can't be pushed, so below is the list of env variables that the code expects and also I'm giving a sample of how to execute. For Actual execution of code, values has to be passed.
+# NOTE:
+All the keys and model names are to be taken from .env file which can't be pushed, so below is the list of env variables that the code expects and also I'm giving a sample of how to execute. For Actual execution of code, values has to be passed.
 
 docker build -t {your_image_name} .
 
@@ -26,5 +27,6 @@ docker run --rm \
 
 1. Swagger UI:
 
-![image](https://github.com/user-attachments/assets/7c8e89de-b0be-4b76-a194-6bfa6e0646ad)
+![image](https://github.com/user-attachments/assets/dd75ff9d-2cb0-4002-99ca-985b37b570eb)
+
 
